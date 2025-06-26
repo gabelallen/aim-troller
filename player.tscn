@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://lx88oih10jvi"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_6hi80"]
+
+[node name="Player" type="Node3D"]
+script = ExtResource("1_6hi80")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+current = true
+fov = 106.0
+
+[node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, -2.86528e-06, -1, 0, 65.55, -4.37114e-08, 0, 0, 0)
+hit_from_inside = true
+collide_with_areas = true
+debug_shape_thickness = 5

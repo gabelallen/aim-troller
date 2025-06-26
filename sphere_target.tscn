@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://djtv46qvyyejd"]
+
+[ext_resource type="Texture2D" uid="uid://d4mq8pkmtanfd" path="res://kenny textures/PNG/Red/texture_09.png" id="1_skonx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qw37j"]
+albedo_texture = ExtResource("1_skonx")
+uv1_triplanar = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_tsukg"]
+material = SubResource("StandardMaterial3D_qw37j")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_pfohn"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
+mesh = SubResource("SphereMesh_tsukg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_pfohn")

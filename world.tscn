@@ -1,0 +1,62 @@
+[gd_scene load_steps=10 format=3 uid="uid://dwpmlghwel8gt"]
+
+[ext_resource type="PackedScene" uid="uid://lx88oih10jvi" path="res://player.tscn" id="1_kygeg"]
+[ext_resource type="Texture2D" uid="uid://btohqfcdc5lxd" path="res://kenny textures/PNG/Dark/texture_09.png" id="2_k6o4o"]
+[ext_resource type="PackedScene" uid="uid://djtv46qvyyejd" path="res://sphere_target.tscn" id="3_i17mk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d5ryh"]
+albedo_texture = ExtResource("2_k6o4o")
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_tckho"]
+material = SubResource("StandardMaterial3D_d5ryh")
+size = Vector3(5000, 1, 5000)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wfdbu"]
+size = Vector3(5000, 1, 5000)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nmqt1"]
+
+[sub_resource type="Sky" id="Sky_o0n43"]
+sky_material = SubResource("ProceduralSkyMaterial_nmqt1")
+radiance_size = 2
+
+[sub_resource type="Environment" id="Environment_ftk87"]
+background_mode = 2
+background_energy_multiplier = 0.95
+sky = SubResource("Sky_o0n43")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+reflected_light_source = 1
+ssao_enabled = true
+ssil_enabled = true
+adjustment_enabled = true
+adjustment_brightness = 1.17
+
+[node name="World" type="Node3D"]
+
+[node name="Player" parent="." instance=ExtResource("1_kygeg")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("BoxMesh_tckho")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("BoxShape3D_wfdbu")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ftk87")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.798636, 0.362181, -0.480631, 0, 0.798636, 0.601815, 0.601815, -0.480631, 0.637819, -2000, 3000, 2000)
+shadow_enabled = true
+
+[node name="Node3D" parent="." instance=ExtResource("3_i17mk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.20834, 2, 0.821134)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.931011, 0, -0.364991, 0, 1, 0, 0.364991, 0, 0.931011, 0, 0, 4.24053)
+current = true
