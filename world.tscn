@@ -38,9 +38,11 @@ adjustment_brightness = 1.17
 [node name="Player" parent="." instance=ExtResource("1_kygeg")]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
+collision_layer = 0
+collision_mask = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5.96038, 0)
 mesh = SubResource("BoxMesh_tckho")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
@@ -54,8 +56,9 @@ environment = SubResource("Environment_ftk87")
 transform = Transform3D(0.798636, 0.362181, -0.480631, 0, 0.798636, 0.601815, 0.601815, -0.480631, 0.637819, -2000, 3000, 2000)
 shadow_enabled = true
 
-[node name="Node3D" parent="." instance=ExtResource("3_i17mk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.20834, 2, 0.821134)
+[node name="Node3D" parent="." node_paths=PackedStringArray("player") instance=ExtResource("3_i17mk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
+player = NodePath("../Player")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(0.931011, 0, -0.364991, 0, 1, 0, 0.364991, 0, 0.931011, 0, 0, 4.24053)
