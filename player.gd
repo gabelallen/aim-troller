@@ -13,6 +13,7 @@ var is_firing := false
 
 var mouse_cache = {} #time, dir
 var cache_duration = 0.5 #how many seconds we store inputs for
+var cache_average = Vector2.ZERO
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -52,6 +53,7 @@ func shoot():
 		hit_sound.play()
 
 func store_input(direction: Vector2) -> void:
+	if direction == null: direction = Vector2.ZERO
 	var timestamp = Time.get_ticks_msec() / 1000.0
 	mouse_cache[timestamp] = direction
 
@@ -65,6 +67,7 @@ func get_cache_average():
 	var sum_x = 0.0
 	var sum_y = 0.0
 	var count = 0
+
 	for dir in mouse_cache.values():
 		sum_x += dir.x
 		sum_y += dir.y
@@ -73,7 +76,9 @@ func get_cache_average():
 	if count > 0:
 		var avg_x = sum_x / count
 		var avg_y = sum_y / count
-		#print("average direction: x =", avg_x, ", y =", avg_y)
+		cache_average = Vector2(avg_x, avg_y)
 	else:
-		print("DEBUG: cache is empty.")
+		print("DEBUG: cache is empty")
+		cache_average = Vector2.ZERO
+
 	
