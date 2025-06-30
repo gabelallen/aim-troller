@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://lx88oih10jvi"]
+[gd_scene load_steps=6 format=3 uid="uid://lx88oih10jvi"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_6hi80"]
 [ext_resource type="PackedScene" uid="uid://lnbcvtpnqknc" path="res://crosshair.tscn" id="2_x8wnj"]
 [ext_resource type="Script" path="res://crosshair.gd" id="3_3wyr7"]
 [ext_resource type="AudioStream" uid="uid://cpmw4ffhn4sjo" path="res://Soft2.ogg" id="4_o4347"]
+[ext_resource type="PackedScene" uid="uid://b2aatpmpjbo3y" path="res://ui.tscn" id="5_cw7p6"]
 
 [node name="Player" type="Node3D"]
 script = ExtResource("1_6hi80")
@@ -30,3 +31,8 @@ max_db = -2.875
 pitch_scale = 2.78
 
 [node name="FireRateTimer" type="Timer" parent="."]
+
+[node name="UI" parent="." instance=ExtResource("5_cw7p6")]
+
+[connection signal="on_shot_fired" from="." to="UI" method="_on_player_on_shot_fired"]
+[connection signal="update_sens" from="UI" to="." method="_on_ui_update_sens"]

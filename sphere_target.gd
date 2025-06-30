@@ -4,15 +4,17 @@ extends Node3D
 @onready var mode_timer = $Mode_Timer
 @onready var direction_timer = $Direction_Timer
 
+signal on_mode_change(mode)
+
 var mode_weights = {
 	"long_strafes": 5,
 	"short_strafes": 5,
-	"giga_long_strafes": 1,
-	"giga_short_strafes": 1,
-	"short_dash": 1,
-	"long_dash": 1,
-	"short_stop": 1,
-	"anti_aim": 50,
+	"giga_long_strafes": 3,
+	"giga_short_strafes": 3,
+	"short_dash": 3,
+	"long_dash": 3,
+	"short_stop": 5,
+	"anti_aim": 40,
 }
 var current_mode = ""
 var orbit_direction_target = 1.0
@@ -27,7 +29,7 @@ var vertical_speed = 0.5
 var orbit_angle = 0.0
 var vertical_angle = 0.0
 const MAX_VERTICAL_ANGLE = deg_to_rad(70)
-const SHARPNESS = 10 #how sharp the turns are, lower number = smoother turns
+const SHARPNESS = 15 #how sharp the turns are, lower number = smoother turns
 
 func _ready():
 	randomize()
@@ -42,7 +44,9 @@ func choose_random_mode():
 	current_mode = weighted_random_choice(mode_weights)
 	mode_timer.wait_time = randf_range(0.2, 2)
 	mode_timer.start()
-
+	
+	emit_signal("on_mode_change", current_mode)
+	
 	match current_mode:
 		"long_strafes":
 			direction_timer.wait_time = 0.5
@@ -80,9 +84,10 @@ func choose_random_mode():
 			direction_timer.start()
 			prev_speed = orbit_speed
 			orbit_speed = 0
-			print("short stop")
+			#print("short stop")
 		"anti_aim":
-			print("anti-aim")
+			pass
+			#print("anti-aim")
 			
 func _process(delta: float) -> void:
 	if current_mode == "anti_aim":
@@ -145,8 +150,8 @@ func update_anti_aim(delta: float) -> void:
 	orbit_direction_current = lerp(orbit_direction_current, orbit_direction_target, delta * SHARPNESS)
 	vertical_direction_current = lerp(vertical_direction_current, vertical_direction_target, delta * SHARPNESS)
 
-	orbit_angle += orbit_direction_current * orbit_speed * delta * 2
-	vertical_angle += vertical_direction_current * vertical_speed * delta * 2
+	orbit_angle += orbit_direction_current * orbit_speed * delta * 2.5
+	vertical_angle += vertical_direction_current * vertical_speed * delta * 2.5
 	vertical_angle = clamp(vertical_angle, -MAX_VERTICAL_ANGLE, MAX_VERTICAL_ANGLE)
 
 	update_position()
@@ -170,3 +175,27 @@ func weighted_random_choice(weights: Dictionary) -> String:
 		if r <= cumulative:
 			return key
 	return weights.keys()[0] # fallback
+
+
+func restart_self():
+	current_mode = ""
+	orbit_direction_target = 1.0
+	orbit_direction_current = 1.0
+	orbit_speed = 1.0
+	orbit_radius = 5.0
+	prev_speed = -1
+
+	vertical_direction_target = 1.0
+	vertical_direction_current = 1.0
+	vertical_speed = 0.5
+	orbit_angle = 0.0
+	vertical_angle = 0.0
+
+	mode_timer.stop()
+	direction_timer.stop()
+	if direction_timer.timeout.is_connected(_on_direction_timer_timeout):
+		direction_timer.timeout.disconnect(_on_direction_timer_timeout)
+	direction_timer.timeout.connect(_on_direction_timer_timeout)
+
+	randomize()
+	choose_random_mode()
