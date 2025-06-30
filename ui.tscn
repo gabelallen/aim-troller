@@ -32,10 +32,11 @@ theme_override_font_sizes/normal_font_size = 18
 layout_mode = 0
 offset_left = 5.0
 offset_top = 71.0
-offset_right = 206.0
-offset_bottom = 126.0
+offset_right = 287.0
+offset_bottom = 149.0
 text = "Sensitivity:
-Press R to restart"
+Press R to restart
+Press LALT to change sensitivity"
 
 [node name="SensEdit" type="TextEdit" parent="."]
 layout_mode = 0
